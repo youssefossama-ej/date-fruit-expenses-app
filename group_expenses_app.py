@@ -324,8 +324,8 @@ def calculate_balances(expenses_df, payments_df):
             amount = float(row["Amount"])
             
             if from_person in balances and to_person in balances:
-                balances[from_person]["balance"] -= amount
-                balances[to_person]["balance"] += amount
+                balances[from_person]["balance"] += amount  # ✅ CORRECT
+                balances[to_person]["balance"] -= amount    # ✅ CORRECT
     
     return balances, total_expenses, per_person_share
 
@@ -459,7 +459,7 @@ def validate_member(name):
 def main():
     st.set_page_config(
         page_title="Date Fruit Sorting - Expense Manager",
-        page_icon="🎓💰",
+        page_icon="🎓",
         layout="wide"
     )
     
@@ -940,6 +940,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
