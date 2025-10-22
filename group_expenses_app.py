@@ -24,8 +24,8 @@ except ImportError:
 # CONFIGURATION CONSTANTS
 # ============================================================================
 SHEET_ID = "1blpS3ZCtNNdUOVUSszotbJYoz9BpJAuWnq19VIZa4mI"
-UNIVERSITY_LOGO_URL = "https://ik.imagekit.io/senti/EJUST%20LOGO.jpg?updatedAt=1761143903947"
-DATE_MASCOT_GIF_URL = "https://ik.imagekit.io/senti/EJUST%20LOGO.jpg?updatedAt=1761143903947"
+UNIVERSITY_LOGO_URL = "https://ik.imagekit.io/senti/del_date.jpg?updatedAt=1761147709230"
+DATE_MASCOT_GIF_URL = "https://ik.imagekit.io/senti/del_date.jpg?updatedAt=1761147709230"
 BACKGROUND_IMAGE_URL = "https://ik.imagekit.io/senti/del_date.jpg?updatedAt=1761147709230"
 
 MEMBERS = [
@@ -920,5 +920,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
