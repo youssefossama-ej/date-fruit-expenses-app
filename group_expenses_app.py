@@ -57,10 +57,33 @@ def apply_custom_css():
             --light-bg: #ffffff;
             --accent-brown: #8B4513;
             --text-light: #f5f5f5;
+            --text-dark: #1a1a1a;
         }
         
+        /* ✅ FIX: Force all text to be dark/readable */
         .stApp {
             background-color: #f8f8f8;
+            color: #1a1a1a !important;
+        }
+        
+        /* ✅ FIX: All text elements */
+        p, span, div, label, .stMarkdown {
+            color: #1a1a1a !important;
+        }
+        
+        /* ✅ FIX: Ensure form labels are visible */
+        .stTextInput label, 
+        .stNumberInput label, 
+        .stSelectbox label,
+        .stDateInput label,
+        .stTextArea label {
+            color: #1a1a1a !important;
+            font-weight: 600;
+        }
+        
+        /* ✅ FIX: Table text */
+        table, th, td {
+            color: #1a1a1a !important;
         }
         
         /* Header Styling */
@@ -70,18 +93,18 @@ def apply_custom_css():
             border-radius: 15px;
             margin-bottom: 2rem;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            color: white;
+            color: white !important;
             text-align: center;
         }
         
         .main-header h1 {
-            color: white;
+            color: white !important;
             margin: 0;
             font-size: 2.5rem;
         }
         
         .main-header p {
-            color: #f5f5f5;
+            color: #f5f5f5 !important;
             margin: 0.5rem 0 0 0;
         }
         
@@ -96,13 +119,13 @@ def apply_custom_css():
         }
         
         .metric-card h3 {
-            color: #C41E3A;
+            color: #C41E3A !important;
             margin: 0 0 0.5rem 0;
             font-size: 1rem;
         }
         
         .metric-card .value {
-            color: #1a1a1a;
+            color: #1a1a1a !important;
             font-size: 2rem;
             font-weight: bold;
             margin: 0;
@@ -110,24 +133,24 @@ def apply_custom_css():
         
         /* Balance Styling */
         .balance-positive {
-            color: #28a745;
+            color: #28a745 !important;
             font-weight: bold;
         }
         
         .balance-negative {
-            color: #dc3545;
+            color: #dc3545 !important;
             font-weight: bold;
         }
         
         .balance-zero {
-            color: #6c757d;
+            color: #6c757d !important;
             font-weight: bold;
         }
         
         /* Button Styling */
         .stButton > button {
             background-color: #C41E3A;
-            color: white;
+            color: white !important;
             border-radius: 8px;
             padding: 0.5rem 2rem;
             border: none;
@@ -152,27 +175,35 @@ def apply_custom_css():
             border-radius: 8px;
             padding: 0.5rem 1.5rem;
             background-color: transparent;
-            color: #1a1a1a;
+            color: #1a1a1a !important;
         }
         
         .stTabs [aria-selected="true"] {
             background-color: #C41E3A;
-            color: white;
+            color: white !important;
         }
         
         /* Input Styling */
         .stTextInput > div > div > input,
         .stNumberInput > div > div > input,
-        .stSelectbox > div > div > select {
+        .stSelectbox > div > div > select,
+        .stDateInput > div > div > input,
+        .stTextArea > div > div > textarea {
             border-radius: 8px;
             border: 1px solid #ddd;
+            color: #1a1a1a !important;
+        }
+        
+        /* ✅ FIX: Info box text */
+        .stInfo, .stWarning, .stSuccess, .stError {
+            color: #1a1a1a !important;
         }
         
         /* Success/Error Messages */
         .success-message {
             background-color: #d4edda;
             border: 1px solid #c3e6cb;
-            color: #155724;
+            color: #155724 !important;
             padding: 1rem;
             border-radius: 8px;
             margin: 1rem 0;
@@ -189,13 +220,13 @@ def apply_custom_css():
         
         .settlement-card .transfer {
             font-size: 1.1rem;
-            color: #1a1a1a;
+            color: #1a1a1a !important;
             font-weight: 600;
         }
         
         .all-settled {
             background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-            color: white;
+            color: white !important;
             padding: 2rem;
             border-radius: 15px;
             text-align: center;
@@ -203,6 +234,20 @@ def apply_custom_css():
             font-weight: bold;
             margin: 2rem 0;
             box-shadow: 0 4px 8px rgba(40,167,69,0.3);
+        }
+        
+        /* ✅ FIX: Sidebar text */
+        .css-1d391kg, [data-testid="stSidebar"] {
+            color: #1a1a1a !important;
+        }
+        
+        /* ✅ FIX: Metric values in Streamlit */
+        [data-testid="stMetricValue"] {
+            color: #1a1a1a !important;
+        }
+        
+        [data-testid="stMetricLabel"] {
+            color: #6c757d !important;
         }
     </style>
     """, unsafe_allow_html=True)
@@ -940,6 +985,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
