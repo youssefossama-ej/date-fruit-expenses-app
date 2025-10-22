@@ -24,8 +24,8 @@ except ImportError:
 # CONFIGURATION CONSTANTS
 # ============================================================================
 SHEET_ID = "1blpS3ZCtNNdUOVUSszotbJYoz9BpJAuWnq19VIZa4mI"
-UNIVERSITY_LOGO_URL = "https://via.placeholder.com/150x150.png?text=University+Logo"
-DATE_MASCOT_GIF_URL = "https://via.placeholder.com/200x200.png?text=Date+Mascot"
+UNIVERSITY_LOGO_URL = "https://ik.imagekit.io/senti/EJUST%20LOGO.jpg?updatedAt=1761143903947"
+DATE_MASCOT_GIF_URL = "blob:chrome-untrusted://image-magnify/81285f7b-139b-4f5d-899b-9c33400f88bf"
 BACKGROUND_IMAGE_URL = "https://via.placeholder.com/1920x1080.png?text=Background"
 
 MEMBERS = [
@@ -913,8 +913,8 @@ def main():
     st.markdown("---")
     st.markdown("""
     <div style="text-align: center; color: #6c757d; padding: 1rem;">
-        <p>🍂 Date Fruit Sorting Project - Expense Manager</p>
-        <p style="font-size: 0.9rem;">Made with ❤️ for efficient team expense management</p>
+        <p>Graduation Project - Expense Manager</p>
+        <p style="font-size: 0.9rem;">Made with ❤️ by Youssef Ossama</p>
     </div>
     """, unsafe_allow_html=True)
 
