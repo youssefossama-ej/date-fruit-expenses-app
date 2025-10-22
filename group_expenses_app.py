@@ -241,7 +241,7 @@ def read_expenses_from_sheet(sheet):
         data = worksheet.get_all_records()
         return pd.DataFrame(data)
     except:
-        return pd.DataFrame(columns=["Date", "Item", "Buyer", "Amount", "Notes"])
+        return pd.DataFrame(columns=["Date", "Item", "Buyer", "Quantity", "Unit Price", "Amount", "Notes"])
 
 def read_payments_from_sheet(sheet):
     """Read payments from Google Sheet."""
@@ -252,11 +252,11 @@ def read_payments_from_sheet(sheet):
     except:
         return pd.DataFrame(columns=["Date", "From", "To", "Amount", "Notes"])
 
-def write_expense_to_sheet(sheet, date, item, buyer, amount, notes):
+def write_expense_to_sheet(sheet, date, item, buyer, quantity, unit_price, amount, notes):
     """Write a new expense to Google Sheet."""
     try:
         worksheet = sheet.worksheet("Expenses")
-        worksheet.append_row([date, item, buyer, float(amount), notes])
+        worksheet.append_row([date, item, buyer, float(quantity), float(unit_price), float(amount), notes])
         return True
     except Exception as e:
         st.error(f"Error writing to sheet: {e}")
@@ -278,12 +278,12 @@ def write_payment_to_sheet(sheet, date, from_person, to_person, amount, notes):
 def generate_demo_data():
     """Generate demo data for testing without Google Sheets."""
     expenses = pd.DataFrame([
-        {"Date": "2024-01-15", "Item": "Transportation", "Buyer": "Fares Samer", "Amount": 550.0, "Notes": "Bus rental"},
-        {"Date": "2024-01-16", "Item": "Food", "Buyer": "Mohamed Tarek", "Amount": 880.0, "Notes": "Lunch for team"},
-        {"Date": "2024-01-17", "Item": "Equipment", "Buyer": "Yassin Sherif", "Amount": 1200.0, "Notes": "Sorting tools"},
-        {"Date": "2024-01-18", "Item": "Supplies", "Buyer": "Youssef Ossama", "Amount": 330.0, "Notes": "Packaging materials"},
-        {"Date": "2024-01-19", "Item": "Refreshments", "Buyer": "Yousef Ibrahim", "Amount": 440.0, "Notes": "Water and snacks"},
-        {"Date": "2024-01-20", "Item": "Documentation", "Buyer": "Mahmoud Sayed", "Amount": 220.0, "Notes": "Printing costs"},
+        {"Date": "2024-01-15", "Item": "Transportation", "Buyer": "Fares Samer", "Quantity": 1, "Unit Price": 550.0, "Amount": 550.0, "Notes": "Bus rental"},
+        {"Date": "2024-01-16", "Item": "Food", "Buyer": "Mohamed Tarek", "Quantity": 11, "Unit Price": 80.0, "Amount": 880.0, "Notes": "Lunch for team"},
+        {"Date": "2024-01-17", "Item": "Equipment", "Buyer": "Yassin Sherif", "Quantity": 3, "Unit Price": 400.0, "Amount": 1200.0, "Notes": "Sorting tools"},
+        {"Date": "2024-01-18", "Item": "Supplies", "Buyer": "Youssef Ossama", "Quantity": 30, "Unit Price": 11.0, "Amount": 330.0, "Notes": "Packaging materials"},
+        {"Date": "2024-01-19", "Item": "Refreshments", "Buyer": "Yousef Ibrahim", "Quantity": 20, "Unit Price": 22.0, "Amount": 440.0, "Notes": "Water and snacks"},
+        {"Date": "2024-01-20", "Item": "Documentation", "Buyer": "Mahmoud Sayed", "Quantity": 100, "Unit Price": 2.2, "Amount": 220.0, "Notes": "Printing costs"},
     ])
     
     payments = pd.DataFrame([
@@ -744,13 +744,29 @@ def main():
                     help="Who paid for this expense"
                 )
                 
-                expense_amount = st.number_input(
-                    f"Amount ({CURRENCY})",
-                    min_value=0.0,
-                    step=0.01,
-                    format="%.2f",
-                    help="Total amount in EGP"
-                )
+                col_qty, col_price = st.columns(2)
+                with col_qty:
+                    expense_quantity = st.number_input(
+                        "Quantity",
+                        min_value=0.0,
+                        value=1.0,
+                        step=1.0,
+                        format="%.0f",
+                        help="Number of items"
+                    )
+                
+                with col_price:
+                    expense_unit_price = st.number_input(
+                        f"Unit Price ({CURRENCY})",
+                        min_value=0.0,
+                        step=0.01,
+                        format="%.2f",
+                        help="Price per unit"
+                    )
+                
+                # Auto-calculate total
+                expense_amount = expense_quantity * expense_unit_price
+                st.info(f"💰 **Total Amount: {expense_amount:.2f} {CURRENCY}**")
                 
                 expense_notes = st.text_area(
                     "Notes (Optional)",
@@ -759,42 +775,46 @@ def main():
                 )
                 
                 submit_expense = st.form_submit_button("💾 Add Expense")
-                
-                if submit_expense:
-                    # Validation
-                    if not expense_item.strip():
-                        st.error("❌ Please enter an item description")
-                    elif not validate_amount(expense_amount):
-                        st.error("❌ Amount must be positive")
-                    elif not validate_member(expense_buyer):
-                        st.error("❌ Invalid member selected")
-                    else:
-                        # Add expense
-                        date_str = expense_date.strftime("%Y-%m-%d")
-                        
-                        if st.session_state.use_demo_data:
-                            # Add to demo data
-                            new_expense = pd.DataFrame([{
-                                "Date": date_str,
-                                "Item": expense_item,
-                                "Buyer": expense_buyer,
-                                "Amount": float(expense_amount),
-                                "Notes": expense_notes
-                            }])
-                            st.session_state.demo_expenses = pd.concat([
-                                st.session_state.demo_expenses,
-                                new_expense
-                            ], ignore_index=True)
-                            st.success(f"✅ Expense added successfully! {expense_buyer} paid {expense_amount:.2f} {CURRENCY} for {expense_item}")
-                            st.balloons()
-                            st.rerun()
-                        elif sheet:
-                            if write_expense_to_sheet(sheet, date_str, expense_item, expense_buyer, expense_amount, expense_notes):
-                                st.success(f"✅ Expense added successfully! {expense_buyer} paid {expense_amount:.2f} {CURRENCY} for {expense_item}")
-                                st.balloons()
-                                st.rerun()
-                        else:
-                            st.error("❌ No data source configured")
+
+if submit_expense:
+    # Validation
+    if not expense_item.strip():
+        st.error("❌ Please enter an item description")
+    elif not validate_amount(expense_quantity):
+        st.error("❌ Quantity must be positive")
+    elif not validate_amount(expense_unit_price):
+        st.error("❌ Unit price must be positive")
+    elif not validate_member(expense_buyer):
+        st.error("❌ Invalid member selected")
+    else:
+        # Add expense
+        date_str = expense_date.strftime("%Y-%m-%d")
+        
+        if st.session_state.use_demo_data:
+            # Add to demo data
+            new_expense = pd.DataFrame([{
+                "Date": date_str,
+                "Item": expense_item,
+                "Buyer": expense_buyer,
+                "Quantity": float(expense_quantity),
+                "Unit Price": float(expense_unit_price),
+                "Amount": float(expense_amount),
+                "Notes": expense_notes
+            }])
+            st.session_state.demo_expenses = pd.concat([
+                st.session_state.demo_expenses,
+                new_expense
+            ], ignore_index=True)
+            st.success(f"✅ Expense added successfully! {expense_buyer} paid {expense_amount:.2f} {CURRENCY} for {expense_quantity:.0f}x {expense_item}")
+            st.balloons()
+            st.rerun()
+        elif sheet:
+            if write_expense_to_sheet(sheet, date_str, expense_item, expense_buyer, expense_quantity, expense_unit_price, expense_amount, expense_notes):
+                st.success(f"✅ Expense added successfully! {expense_buyer} paid {expense_amount:.2f} {CURRENCY} for {expense_quantity:.0f}x {expense_item}")
+                st.balloons()
+                st.rerun()
+        else:
+            st.error("❌ No data source configured")
         
         with col2:
             st.info("""
@@ -920,6 +940,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
