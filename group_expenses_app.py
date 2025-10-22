@@ -25,8 +25,8 @@ except ImportError:
 # ============================================================================
 SHEET_ID = "1blpS3ZCtNNdUOVUSszotbJYoz9BpJAuWnq19VIZa4mI"
 UNIVERSITY_LOGO_URL = "https://ik.imagekit.io/senti/EJUST%20LOGO.jpg?updatedAt=1761143903947"
-DATE_MASCOT_GIF_URL = "blob:chrome-untrusted://image-magnify/81285f7b-139b-4f5d-899b-9c33400f88bf"
-BACKGROUND_IMAGE_URL = "https://via.placeholder.com/1920x1080.png?text=Background"
+DATE_MASCOT_GIF_URL = "https://ik.imagekit.io/senti/del_date.jpg?updatedAt=1761147709230"
+BACKGROUND_IMAGE_URL = "https://ik.imagekit.io/senti/EJUST%20LOGO.jpg?updatedAt=1761143903947"
 
 MEMBERS = [
     "Fares Samer",
@@ -458,8 +458,8 @@ def validate_member(name):
 # ============================================================================
 def main():
     st.set_page_config(
-        page_title="Graduation Project- Expense Manager",
-        page_icon="🎓",
+        page_title="Date Fruit Sorting - Expense Manager",
+        page_icon="🍂",
         layout="wide"
     )
     
@@ -468,7 +468,7 @@ def main():
     # Header
     st.markdown(f"""
     <div class="main-header">
-        <h1>Graduation Project</h1>
+        <h1>🍂 Date Fruit Sorting Project</h1>
         <p>Expense Manager - {len(MEMBERS)} Members</p>
     </div>
     """, unsafe_allow_html=True)
@@ -920,4 +920,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
