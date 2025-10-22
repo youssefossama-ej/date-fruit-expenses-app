@@ -776,56 +776,56 @@ def main():
                 
                 submit_expense = st.form_submit_button("💾 Add Expense")
 
-if submit_expense:
-    # Validation
-    if not expense_item.strip():
-        st.error("❌ Please enter an item description")
-    elif not validate_amount(expense_quantity):
-        st.error("❌ Quantity must be positive")
-    elif not validate_amount(expense_unit_price):
-        st.error("❌ Unit price must be positive")
-    elif not validate_member(expense_buyer):
-        st.error("❌ Invalid member selected")
-    else:
-        # Add expense
-        date_str = expense_date.strftime("%Y-%m-%d")
-        
-        if st.session_state.use_demo_data:
-            # Add to demo data
-            new_expense = pd.DataFrame([{
-                "Date": date_str,
-                "Item": expense_item,
-                "Buyer": expense_buyer,
-                "Quantity": float(expense_quantity),
-                "Unit Price": float(expense_unit_price),
-                "Amount": float(expense_amount),
-                "Notes": expense_notes
-            }])
-            st.session_state.demo_expenses = pd.concat([
-                st.session_state.demo_expenses,
-                new_expense
-            ], ignore_index=True)
-            st.success(f"✅ Expense added successfully! {expense_buyer} paid {expense_amount:.2f} {CURRENCY} for {expense_quantity:.0f}x {expense_item}")
-            st.balloons()
-            st.rerun()
-        elif sheet:
-            if write_expense_to_sheet(sheet, date_str, expense_item, expense_buyer, expense_quantity, expense_unit_price, expense_amount, expense_notes):
-                st.success(f"✅ Expense added successfully! {expense_buyer} paid {expense_amount:.2f} {CURRENCY} for {expense_quantity:.0f}x {expense_item}")
-                st.balloons()
-                st.rerun()
-        else:
-            st.error("❌ No data source configured")
-        
-        with col2:
-            st.info("""
-            ### 📌 Guidelines
-            - Enter accurate amounts
-            - Select the correct payer
-            - Add notes for clarity
-            - All amounts in EGP
-            """)
-            
-            st.image(DATE_MASCOT_GIF_URL, width=150)
+                if submit_expense:
+                    # Validation
+                    if not expense_item.strip():
+                        st.error("❌ Please enter an item description")
+                    elif not validate_amount(expense_quantity):
+                        st.error("❌ Quantity must be positive")
+                    elif not validate_amount(expense_unit_price):
+                        st.error("❌ Unit price must be positive")
+                    elif not validate_member(expense_buyer):
+                        st.error("❌ Invalid member selected")
+                    else:
+                        # Add expense
+                        date_str = expense_date.strftime("%Y-%m-%d")
+                        
+                        if st.session_state.use_demo_data:
+                            # Add to demo data
+                            new_expense = pd.DataFrame([{
+                                "Date": date_str,
+                                "Item": expense_item,
+                                "Buyer": expense_buyer,
+                                "Quantity": float(expense_quantity),
+                                "Unit Price": float(expense_unit_price),
+                                "Amount": float(expense_amount),
+                                "Notes": expense_notes
+                            }])
+                            st.session_state.demo_expenses = pd.concat([
+                                st.session_state.demo_expenses,
+                                new_expense
+                            ], ignore_index=True)
+                            st.success(f"✅ Expense added successfully! {expense_buyer} paid {expense_amount:.2f} {CURRENCY} for {expense_quantity:.0f}x {expense_item}")
+                            st.balloons()
+                            st.rerun()
+                        elif sheet:
+                            if write_expense_to_sheet(sheet, date_str, expense_item, expense_buyer, expense_quantity, expense_unit_price, expense_amount, expense_notes):
+                                st.success(f"✅ Expense added successfully! {expense_buyer} paid {expense_amount:.2f} {CURRENCY} for {expense_quantity:.0f}x {expense_item}")
+                                st.balloons()
+                                st.rerun()
+                        else:
+                            st.error("❌ No data source configured")
+                        
+                        with col2:
+                            st.info("""
+                            ### 📌 Guidelines
+                            - Enter accurate amounts
+                            - Select the correct payer
+                            - Add notes for clarity
+                            - All amounts in EGP
+                            """)
+                            
+                            st.image(DATE_MASCOT_GIF_URL, width=150)
     
     # ========================================================================
     # TAB 3: ADD PAYMENT
@@ -940,6 +940,7 @@ if submit_expense:
 
 if __name__ == "__main__":
     main()
+
 
 
 
