@@ -459,7 +459,7 @@ def validate_member(name):
 def main():
     st.set_page_config(
         page_title="Date Fruit Sorting - Expense Manager",
-        page_icon="🍂",
+        page_icon="🎓💰",
         layout="wide"
     )
     
@@ -468,7 +468,7 @@ def main():
     # Header
     st.markdown(f"""
     <div class="main-header">
-        <h1>🍂 Date Fruit Sorting Project</h1>
+        <h1>💰Graduation Project🎓</h1>
         <p>Expense Manager - {len(MEMBERS)} Members</p>
     </div>
     """, unsafe_allow_html=True)
@@ -920,3 +920,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
